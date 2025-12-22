@@ -29,7 +29,7 @@ const incomeCategoryItemSchema = Joi.object({
   id: Joi.string().uuid().required(),
   code: Joi.string().required(),
   name: Joi.string().required(),
-  description: Joi.string().allow("").optional(),
+  description: Joi.string().allow("", null).optional(),
   createdBy: Joi.string().uuid().required(),
   createdAt: Joi.date().required(),
   updatedBy: Joi.string().uuid().allow(null),
