@@ -23,11 +23,11 @@ export const swaggerPlugin = {
       // -------------------------
 
       securityDefinitions: {
-        // apiKey: {
-        //   type: "apiKey",
-        //   name: "x-api-key",
-        //   in: "header",
-        // },
+        apiKey: {
+          type: "apiKey",
+          name: "x-api-key",
+          in: "header",
+        },
         jwt: {
           type: "apiKey",
           name: "Authorization",
