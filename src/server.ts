@@ -67,7 +67,7 @@ export async function createServer() {
                         dom_id: '#swagger-ui',
                         deepLinking: true,
                         presets: [ SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset ],
-                        layout: "StandaloneLayout"
+                        layout: "StandaloneLayout",
                         // Mengurutkan Endpoint (GET/POST/dll) di dalam grup
                         // Pilihan: 'alpha' (abjad path), 'method' (HTTP method), atau function
                         operationsSorter: 'method', 
