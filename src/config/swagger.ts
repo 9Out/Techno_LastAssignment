@@ -15,7 +15,13 @@ export const swaggerPlugin = {
       },
       grouping: "tags",
       definitionPrefix: "useLabel",
-      documentationPath: "/docs",
+      
+      // --- PERUBAHAN PENTING ---
+      swaggerUI: false, // Matikan UI bawaan yang rusak di Vercel
+      jsonPath: "/swagger.json", // Pastikan endpoint ini tetap aktif
+      documentationPath: "/docs-hidden", // Ganti path agar tidak bentrok dengan route manual kita
+      // -------------------------
+
       securityDefinitions: {
         // apiKey: {
         //   type: "apiKey",

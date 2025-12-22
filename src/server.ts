@@ -32,8 +32,51 @@ export async function createServer() {
   const VALID_API_KEY = process.env.KunciRumah;
 
   await server.register(swaggerPlugin);
-
   await server.register(authJwtPlugin);
+
+  server.route({
+    method: 'GET',
+    path: '/docs', // Anda bisa akses ini di browser nanti
+    options: {
+      auth: false,
+      tags: ['api'], // Agar route ini tidak dianggap error
+    },
+    handler: (request, h) => {
+      return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>API Documentation</title>
+            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.10.5/swagger-ui.css" />
+            <style>
+                html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+                *, *:before, *:after { box-sizing: inherit; }
+                body { margin:0; background: #fafafa; }
+            </style>
+        </head>
+        <body>
+            <div id="swagger-ui"></div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.10.5/swagger-ui-bundle.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.10.5/swagger-ui-standalone-preset.js"></script>
+            <script>
+                window.onload = function() {
+                    // Load JSON dari endpoint yang dihasilkan swagger.ts
+                    const ui = SwaggerUIBundle({
+                        url: "/swagger.json", 
+                        dom_id: '#swagger-ui',
+                        deepLinking: true,
+                        presets: [ SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset ],
+                        layout: "StandaloneLayout"
+                    });
+                    window.ui = ui;
+                };
+            </script>
+        </body>
+        </html>
+      `;
+    }
+  });
 
   server.validator(Joi);
 
@@ -49,7 +92,7 @@ export async function createServer() {
       `Incoming request: ${request.method.toUpperCase()} ${request.path}`
     );
 
-    const swaggerPaths = ['/docs', '/swagger.json', '/swaggerui'];
+    const swaggerPaths = ['/docs', '/swagger.json'];
     if (request.method === 'options' || swaggerPaths.some(p => request.path.startsWith(p))) {
       return h.continue;
     }
