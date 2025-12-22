@@ -68,6 +68,13 @@ export async function createServer() {
                         deepLinking: true,
                         presets: [ SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset ],
                         layout: "StandaloneLayout"
+                        // Mengurutkan Endpoint (GET/POST/dll) di dalam grup
+                        // Pilihan: 'alpha' (abjad path), 'method' (HTTP method), atau function
+                        operationsSorter: 'method', 
+
+                        // Mengurutkan Grup/Tags (Nama Controller)
+                        // Pilihan: 'alpha' (abjad A-Z)
+                        tagsSorter: 'alpha',
                     });
                     window.ui = ui;
                 };
