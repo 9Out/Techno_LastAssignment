@@ -6,10 +6,9 @@ dotenv.config();
 import Hapi, { Request, ResponseToolkit } from "@hapi/hapi";
 import { routes } from "./routes/api.route";
 import { authRoutes } from "./routes/auth.route";
-import { usersRoutes } from "./routes/users.route";
 import { incomeBatchesRoutes } from "./routes/income-batches.route";
 import { incomeCategoriesRoutes } from "./routes/income-categories.route";
-import { expenseBatchesRoutes } from "./routes/expense-batches.routes";
+import { expenseBatchesRoutes } from "./routes/exspense-batches.route";
 import { expenseCategoriesRoutes } from "./routes/exspense-categories.route";
 import { swaggerPlugin } from "./config/swagger";
 import Joi from 'joi';
@@ -44,7 +43,6 @@ export async function createServer() {
   server.route(incomeCategoriesRoutes);
   server.route(expenseBatchesRoutes);
   server.route(expenseCategoriesRoutes);
-  server.route(usersRoutes);
 
   server.ext("onRequest", (request: Request, h: ResponseToolkit) => {
     console.log(
