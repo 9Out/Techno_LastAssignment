@@ -1,4 +1,8 @@
 import Joi from "joi";
+
+// Regular expression untuk validasi nilai numerik/decimal
+const decimalRegex = /^\d+(\.\d{1,2})?$/;
+
 // ============================
 // INCOME BATCHES
 // ============================
@@ -11,8 +15,8 @@ export const findByIdIncomeBatchParamScheme = Joi.object({
 export const getAllIncomeBatchesQuerySchema = Joi.object({
   search: Joi.string().optional().description("Untuk description"),
   categoryId: Joi.string().optional(),
-  fromDate: Joi.date().optional().description("fromDate harus format YYYY-MM-DD"),
-  toDate: Joi.date().optional().description("toDate harus format YYYY-MM-DD"),
+  fromDate: Joi.date().iso().optional().description("fromDate harus format YYYY-MM-DD"),
+  toDate: Joi.date().iso().optional().description("toDate harus format YYYY-MM-DD"),
   sortBy: Joi.string().valid("createdAt", "totalAmount").optional(),
   sortOrder: Joi.string().valid("asc", "desc").optional(),
   page: Joi.number().integer().min(1).optional(),
@@ -23,16 +27,17 @@ export const getAllIncomeBatchesQuerySchema = Joi.object({
 export const createIncomeBatchSchema = Joi.object({
   categoryId: Joi.string().uuid().required().example("bbec0be8-8cc4-48b5-9af7-4d57e412629b"),
 
-  incomeDate: Joi.string()
+  incomeDate: Joi.date()
+    .iso() // Memastikan format tanggal standar (YYYY-MM-DD)
     .required()
-    .pattern(/^\d{4}-\d{2}-\d{2}$/)
     .example("2025-07-12")
     .messages({
-      "string.pattern.base": "incomeDate harus format YYYY-MM-DD",
+      "date.format": "incomeDate harus format YYYY-MM-DD",
+      "date.base": "incomeDate harus berupa tanggal yang valid",
     }),
 
   totalAmount: Joi.string()
-    .pattern(/^\d+(\.\d{1,2})?$/)
+    .pattern(decimalRegex)
     .required()
     .example("12500000")
     .messages({
@@ -45,13 +50,23 @@ export const createIncomeBatchSchema = Joi.object({
 // Update
 export const updateIncomeBatchSchema = Joi.object({
   categoryId: Joi.string().optional().example("042ef9c7-4cb2-4547-a7d7-9db404e3a4ce"),
-  incomeDate: Joi.string()
-    .pattern(/^\d{4}-\d{2}-\d{2}$/)
-    .example("2025-05-01")
-    .optional()
-    .messages({ 
-      "string.pattern.base": "incomeDate harus format YYYY-MM-DD", 
+  
+  incomeDate: Joi.date()
+    .iso() // Memastikan format tanggal standar (YYYY-MM-DD)
+    .required()
+    .example("2025-07-12")
+    .messages({
+      "date.format": "incomeDate harus format YYYY-MM-DD",
+      "date.base": "incomeDate harus berupa tanggal yang valid",
     }),
-  totalAmount: Joi.string().optional().messages({ "string.pattern.base": "totalAmount harus numeric" }).example("25000000"),
+  
+  totalAmount: Joi.string()
+    .pattern(decimalRegex)
+    .required()
+    .example("12500000")
+    .messages({
+      "string.pattern.base": "totalAmount harus numeric",
+    }),
+
   description: Joi.string().optional().allow("").example("Ini perubahan deskripsinya"),
 });

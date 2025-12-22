@@ -7,8 +7,6 @@ import {
   IUpdateExpenseBatchRequest,
   ISoftDeleteExpenseBatchRequest,
   IExpenseBatchQuery,
-  IApproveExpenseBatchRequest, // Import interface baru
-  IRejectExpenseBatchRequest, // Import interface baru
 } from "../types/requests/expense-batches-request";
 
 import { errorResponse, successResponse } from "../utils/response.util";
@@ -25,7 +23,8 @@ export class ExpenseBatchesController {
 
     try {
       const query: IExpenseBatchQuery = request.query as any;
-      const result = await expenseBatchesService.findAll(query);
+      const userId = request.auth.credentials?.id as string;
+      const result = await expenseBatchesService.findAll(query, userId);
 
       logSuccess(action, result);
       return successResponse(
@@ -163,65 +162,6 @@ export class ExpenseBatchesController {
     }
   }
 
-  /**
-   * @description Menyetujui (Approve) batch pengeluaran.
-   */
-  async approve(request: Request, h: ResponseToolkit) {
-    const action = "APPROVE_EXPENSE_BATCH";
-
-    try {
-      const { id } = request.params;
-
-      const payload: IApproveExpenseBatchRequest = {
-        approvedBy: request.auth.credentials?.id as string,
-      };
-
-      const result = await expenseBatchesService.approve(id, payload);
-
-      logSuccess(action, result);
-      return successResponse(h, result, "Expense batch approved successfully");
-
-    } catch (err: any) {
-      logError(action, err);
-
-      if (err instanceof AppError) {
-        return errorResponse(h, err.message, err.status, err.code);
-      }
-
-      return errorResponse(h, "Unexpected server error", 500);
-    }
-  }
-
-  /**
-   * @description Menolak (Reject) batch pengeluaran.
-   */
-  async reject(request: Request, h: ResponseToolkit) {
-    const action = "REJECT_EXPENSE_BATCH";
-
-    try {
-      const { id } = request.params;
-      const payload = request.payload as IRejectExpenseBatchRequest; // Payload mungkin berisi alasan
-
-      const data: IRejectExpenseBatchRequest = {
-        ...payload,
-        rejectedBy: request.auth.credentials?.id as string, // Menggunakan user yang melakukan aksi sebagai rejectedBy
-      };
-
-      const result = await expenseBatchesService.reject(id, data);
-
-      logSuccess(action, result);
-      return successResponse(h, result, "Expense batch rejected successfully");
-
-    } catch (err: any) {
-      logError(action, err);
-
-      if (err instanceof AppError) {
-        return errorResponse(h, err.message, err.status, err.code);
-      }
-
-      return errorResponse(h, "Unexpected server error", 500);
-    }
-  }
 }
 
 export const expenseBatchesController = new ExpenseBatchesController();

@@ -18,8 +18,8 @@ export const getAllExpenseCategoriesSchema = Joi.object({
   search: Joi.string().optional().allow("").example("Belanja"),
   code: Joi.string().optional().allow("").example("belanja"),
 
-  fromDate: Joi.date().optional().example("2025-12-01"),
-  toDate: Joi.date().optional().example("2025-12-31"),
+  fromDate: Joi.date().iso().optional().example("2025-12-01"),
+  toDate: Joi.date().iso().optional().example("2025-12-31"),
 
   sortBy: Joi.string()
     .valid("name", "code", "createdAt")
@@ -62,11 +62,6 @@ export const createExpenseCategorySchema = Joi.object({
     .optional()
     .allow("")
     .example("Pengeluaran belanja"),
-
-  parentId: Joi.string()
-    .optional()
-    .allow(null)
-    .example(null),
 });
 
 // ============================
@@ -82,9 +77,4 @@ export const updateExpenseCategorySchema = Joi.object({
     .optional()
     .allow("")
     .example("Pembaruan belanja"),
-
-  parentId: Joi.string()
-    .optional()
-    .allow(null)
-    .example("9e97bb21-2535-434f-8cbc-ac76d76700f2"),
 });

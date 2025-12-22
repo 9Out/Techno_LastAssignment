@@ -19,7 +19,8 @@ export class IncomeBatchesController {
 
     try {
       const query: IIncomeBatchQuery = request.query as any;
-      const result = await incomeBatchesService.findAll(query);
+      const userId = request.auth.credentials?.id as string;
+      const result = await incomeBatchesService.findAll(query, userId);
 
       logSuccess(action, result);
       return successResponse(
