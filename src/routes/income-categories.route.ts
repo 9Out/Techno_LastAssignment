@@ -13,7 +13,7 @@ export const incomeCategoriesRoutes: ServerRoute[] = [
     path: "/income-categories",
     handler: incomeCategoriesController.getAll,
     options: {
-      tags: ["api", "Income Categories"],
+      tags: ["api", "2.1 Income Categories"],
       description: "Mengambil semua kategori pendapatan",
       validate: {
         query: getAllIncomeCategoriesSchema,
@@ -33,7 +33,7 @@ export const incomeCategoriesRoutes: ServerRoute[] = [
     path: "/income-categories/{id}",
     handler: incomeCategoriesController.getById,
     options: {
-      tags: ["api", "Income Categories"],
+      tags: ["api", "2.1 Income Categories"],
       description: "Mengambil detail kategori pendapatan berdasarkan ID",
       validate: {
         params: findByIdCategoryParamScheme,
@@ -53,7 +53,7 @@ export const incomeCategoriesRoutes: ServerRoute[] = [
     path: "/income-categories",
     handler: incomeCategoriesController.create,
     options: {
-      tags: ["api", "Income Categories"],
+      tags: ["api", "2.1 Income Categories"],
       description: "Membuat kategori pendapatan baru",
       validate: {
         payload: createIncomeCategorySchema,
@@ -73,7 +73,7 @@ export const incomeCategoriesRoutes: ServerRoute[] = [
     path: "/income-categories/{id}",
     handler: incomeCategoriesController.update,
     options: {
-      tags: ["api", "Income Categories"],
+      tags: ["api", "2.1 Income Categories"],
       description: "Memperbarui kategori pendapatan berdasarkan ID",
       validate: {
         params: findByIdCategoryParamScheme,
@@ -94,7 +94,7 @@ export const incomeCategoriesRoutes: ServerRoute[] = [
     path: "/income-categories/{id}",
     handler: incomeCategoriesController.delete,
     options: {
-      tags: ["api", "Income Categories"],
+      tags: ["api", "2.1 Income Categories"],
       description: "Menghapus kategori pendapatan berdasarkan ID",
       validate: {
         params: findByIdCategoryParamScheme,

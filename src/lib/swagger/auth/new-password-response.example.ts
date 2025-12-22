@@ -15,7 +15,7 @@ const newPasswordResponseExample = {
 };
 
 export const newPasswordResponseSchema = Joi.object({
-  success: Joi.string().required(),
+  success: Joi.boolean().required(),
   message: Joi.string().required(),
   data: Joi.object({
     id: Joi.string().required(),

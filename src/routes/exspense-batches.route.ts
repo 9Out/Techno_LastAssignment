@@ -21,7 +21,7 @@ export const expenseBatchesRoutes: ServerRoute[] = [
         path: "/expense-batches",
         handler: expenseBatchesController.getAll,
         options: {
-            tags: ["api", "Expense Batches"],
+            tags: ["api", "3.2 Expense Batches"],
             description: "Mengambil semua expense batches",
             validate: {
                 query: getAllExpenseBatchesQuerySchema,
@@ -42,7 +42,7 @@ export const expenseBatchesRoutes: ServerRoute[] = [
         path: "/expense-batches/{id}",
         handler: expenseBatchesController.getById,
         options: {
-            tags: ["api", "Expense Batches"],
+            tags: ["api", "3.2 Expense Batches"],
             description: "Mengambil detail expense batch berdasarkan ID",
             validate: {
                 params: findByIdExpenseBatchParamScheme,
@@ -63,7 +63,7 @@ export const expenseBatchesRoutes: ServerRoute[] = [
         path: "/expense-batches",
         handler: expenseBatchesController.create,
         options: {
-            tags: ["api", "Expense Batches"],
+            tags: ["api", "3.2 Expense Batches"],
             description: "Membuat expense batch baru",
             validate: {
                 payload: createExpenseBatchSchema,
@@ -84,7 +84,7 @@ export const expenseBatchesRoutes: ServerRoute[] = [
         path: "/expense-batches/{id}",
         handler: expenseBatchesController.update,
         options: {
-            tags: ["api", "Expense Batches"],
+            tags: ["api", "3.2 Expense Batches"],
             description: "Memperbarui expense batch berdasarkan ID",
             validate: {
                 payload: updateExpenseBatchSchema,
@@ -106,7 +106,7 @@ export const expenseBatchesRoutes: ServerRoute[] = [
         path: "/expense-batches/{id}",
         handler: expenseBatchesController.softDelete,
         options: {
-            tags: ["api", "Expense Batches"],
+            tags: ["api", "3.2 Expense Batches"],
             description: "Menghapus (soft delete) expense batch berdasarkan ID",
             validate: {
                 params: findByIdExpenseBatchParamScheme,

@@ -14,7 +14,7 @@ const registerResponseExample = {
 };
 
 export const registerResponseSchema = Joi.object({
-  success: Joi.string().required(),
+  success: Joi.boolean().required(),
   message: Joi.string().required(),
   data: Joi.object({
     id: Joi.string().required(),

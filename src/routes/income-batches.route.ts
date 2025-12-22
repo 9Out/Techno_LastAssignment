@@ -13,7 +13,7 @@ export const incomeBatchesRoutes: ServerRoute[] = [
     path: "/income-batches",
     handler: incomeBatchesController.getAll,
     options: {
-      tags: ["api", "Income Batches"],
+      tags: ["api", "2.2 Income Batches"],
       description: "Mengambil semua income batches",
       validate: {
         query: getAllIncomeBatchesQuerySchema,
@@ -33,7 +33,7 @@ export const incomeBatchesRoutes: ServerRoute[] = [
     path: "/income-batches/{id}",
     handler: incomeBatchesController.getById,
     options: {
-      tags: ["api", "Income Batches"],
+      tags: ["api", "2.2 Income Batches"],
       description: "Mengambil detail income batch berdasarkan ID",
       validate: {
         params: findByIdIncomeBatchParamScheme,
@@ -53,7 +53,7 @@ export const incomeBatchesRoutes: ServerRoute[] = [
     path: "/income-batches",
     handler: incomeBatchesController.create,
     options: {
-      tags: ["api", "Income Batches"],
+      tags: ["api", "2.2 Income Batches"],
       description: "Membuat income batch baru",
       validate: {
         payload: createIncomeBatchSchema,
@@ -73,7 +73,7 @@ export const incomeBatchesRoutes: ServerRoute[] = [
     path: "/income-batches/{id}",
     handler: incomeBatchesController.update,
     options: {
-      tags: ["api", "Income Batches"],
+      tags: ["api", "2.2 Income Batches"],
       description: "Memperbarui income batch berdasarkan ID",
       validate: {
         payload: updateIncomeBatchSchema,
@@ -94,7 +94,7 @@ export const incomeBatchesRoutes: ServerRoute[] = [
     path: "/income-batches/{id}",
     handler: incomeBatchesController.delete,
     options: {
-      tags: ["api", "Income Batches"],
+      tags: ["api", "2.2 Income Batches"],
       description: "Menghapus income batch berdasarkan ID",
         validate: {
         params: findByIdIncomeBatchParamScheme,

@@ -39,7 +39,7 @@ export async function createServer() {
     path: '/docs', // Anda bisa akses ini di browser nanti
     options: {
       auth: false,
-      tags: ['api'], // Agar route ini tidak dianggap error
+      tags: ['api', "0. Home"], // Agar route ini tidak dianggap error
     },
     handler: (request, h) => {
       return `

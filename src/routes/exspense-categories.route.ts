@@ -29,7 +29,7 @@ export const expenseCategoriesRoutes: ServerRoute[] = [
     path: "/expense-categories/{id}",
     handler: expenseCategoriesController.getById,
     options: {
-      tags: ["api", "Expense Categories"],
+      tags: ["api", "3.1 Expense Categories"],
       description: "Mengambil detail kategori pengeluaran berdasarkan ID",
       validate: {
         params: findByIdCategoryParamScheme,
@@ -45,7 +45,7 @@ export const expenseCategoriesRoutes: ServerRoute[] = [
     path: "/expense-categories",
     handler: expenseCategoriesController.create,
     options: {
-      tags: ["api", "Expense Categories"],
+      tags: ["api", "3.1 Expense Categories"],
       description: "Membuat kategori pengeluaran baru",
       validate: {
         payload: createExpenseCategorySchema,
@@ -61,7 +61,7 @@ export const expenseCategoriesRoutes: ServerRoute[] = [
     path: "/expense-categories/{id}",
     handler: expenseCategoriesController.update,
     options: {
-      tags: ["api", "Expense Categories"],
+      tags: ["api", "3.1 Expense Categories"],
       description: "Memperbarui kategori pengeluaran berdasarkan ID",
       validate: {
         params: findByIdCategoryParamScheme,
@@ -78,7 +78,7 @@ export const expenseCategoriesRoutes: ServerRoute[] = [
     path: "/expense-categories/{id}",
     handler: expenseCategoriesController.delete,
     options: {
-      tags: ["api", "Expense Categories"],
+      tags: ["api", "3.1 Expense Categories"],
       description: "Menghapus kategori pengeluaran berdasarkan ID",
       validate: {
         params: findByIdCategoryParamScheme,

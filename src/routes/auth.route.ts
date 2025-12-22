@@ -16,7 +16,7 @@ export const authRoutes: ServerRoute[] = [
     handler: authController.register,
     options: {
       auth: false,
-      tags: ["api", "Auth"],
+      tags: ["api", "1. Auth"],
       description: "Registrasi akun baru",
       notes: "Membuat akun baru menggunakan email & password.",
       plugins: {
@@ -45,7 +45,7 @@ export const authRoutes: ServerRoute[] = [
     handler: authController.login,
     options: {
       auth: false,
-      tags: ["api", "Auth"],
+      tags: ["api", "1. Auth"],
       description: "Login akun",
       notes: "Mengembalikan JWT token jika email & password valid.",
       plugins: {
@@ -73,7 +73,7 @@ export const authRoutes: ServerRoute[] = [
     path: "/auth/new-password",
     handler: authController.setNewPassword,
     options: {
-      tags: ["api", "Auth"],
+      tags: ["api", "1. Auth"],
       description: "Set password baru",
       plugins: {
         "hapi-swagger": {
