@@ -1,10 +1,10 @@
 import { ServerRoute } from "@hapi/hapi";
 import { incomeBatchesController } from "../controllers/income-batches.controller";
 import { createIncomeBatchSchema, findByIdIncomeBatchParamScheme, getAllIncomeBatchesQuerySchema, updateIncomeBatchSchema } from "../validations/income-batch.validation";
-import { createIncomeBatchResponseSchema } from "../lib/swagger/incoming_batches/create-response-example";
+import { createIncomeBatchResponseSchema } from "../lib/swagger/incoming_batches/create-response.example";
 import { getAllIncomeBatchesResponseSchema } from "../lib/swagger/incoming_batches/get-all-response.example";
-import { findIncomeBatchByIdResponseSchema } from "../lib/swagger/incoming_batches/find-by-id-response-example";
-import { updateIncomeBatchResponseSchema } from "../lib/swagger/incoming_batches/update-response-example";
+import { findIncomeBatchByIdResponseSchema } from "../lib/swagger/incoming_batches/find-by-id-response.example";
+import { updateIncomeBatchResponseSchema } from "../lib/swagger/incoming_batches/update-response.example";
 import { deleteIncomeBatchResponseSchema } from "../lib/swagger/incoming_batches/delete-response.example";
 
 export const incomeBatchesRoutes: ServerRoute[] = [
