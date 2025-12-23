@@ -74,8 +74,8 @@
               <!-- Main card -->
               <div class="settings-user text-center p-30">
                 <img src="assets/images/profile/profile-image.png" class="rounded-circle mb-10" width="90" alt="User" />
-                <h6 class="mb-0">Admin User</h6>
-                <p class="text-sm text-gray">admin@example.com</p>
+                <h6 class="mb-0" id="headerName">Nama User</h6>
+                <p class="text-sm text-gray" id="headerEmail">admin@example.com</p>
               </div>
 
               <!-- PROFIL -->
@@ -116,11 +116,11 @@
 
               <hr>
 
-              <!-- RESET -->
-              <button class="settings-item danger" data-bs-toggle="modal" data-bs-target="#modalReset">
+              <!-- HAPUS AKUN -->
+              <button class="settings-item danger" data-bs-toggle="modal" data-bs-target="#modalDeleteAccount">
                 <div>
-                  <h6>Reset Semua Data</h6>
-                  <p class="text-sm">Tindakan ini tidak dapat dibatalkan</p>
+                  <h6>Hapus Akun</h6>
+                  <p class="text-sm">Akun akan dinonaktifkan secara permanen</p>
                 </div>
                 <i class="lni lni-warning"></i>
               </button>
@@ -150,33 +150,36 @@
             <h5 class="modal-title">Profil Saya</h5>
             <button class="btn-close" data-bs-dismiss="modal"></button>
           </div>
+
           <div class="modal-body">
 
             <div class="text-center mb-20">
-              <img src="assets/images/profile/profile-image.png" class="rounded-circle mb-10" width="90">
-              <div>
-                <input type="file" class="form-control form-control-sm">
-              </div>
+              <img
+                id="profileAvatar"
+                src="assets/images/profile/profile-image.png"
+                class="rounded-circle mb-10"
+                width="90"
+              >
             </div>
 
             <div class="input-style-1">
               <label>Nama Lengkap</label>
-              <input type="text" value="Admin User">
+              <input type="text" id="profileName" disabled>
             </div>
 
             <div class="input-style-1">
               <label>Email</label>
-              <input type="email" value="admin@example.com">
+              <input type="email" id="profileEmail" disabled>
             </div>
 
             <div class="input-style-1">
               <label>Bio</label>
-              <textarea rows="3"></textarea>
+              <textarea rows="3" id="profileBio" disabled></textarea>
             </div>
 
-            <button class="main-btn primary-btn btn-hover w-100">
-              Simpan Perubahan
-            </button>
+            <!-- <button class="main-btn secondary-btn w-100" data-bs-dismiss="modal">
+              Tutup
+            </button> -->
 
           </div>
         </div>
@@ -184,32 +187,38 @@
     </div>
 
 
+
     <!-- Modal ganti password  -->
     <div class="modal fade" id="modalPassword" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+
           <div class="modal-header">
             <h5 class="modal-title">Ganti Password</h5>
             <button class="btn-close" data-bs-dismiss="modal"></button>
           </div>
+
           <div class="modal-body">
 
             <div class="input-style-1">
               <label>Password Saat Ini</label>
-              <input type="password">
+              <input type="password" id="currentPassword" placeholder="(Opsional)">
             </div>
 
             <div class="input-style-1">
               <label>Password Baru</label>
-              <input type="password">
+              <input type="password" id="newPassword">
             </div>
 
             <div class="input-style-1">
               <label>Konfirmasi Password</label>
-              <input type="password">
+              <input type="password" id="confirmPassword">
             </div>
 
-            <button class="main-btn primary-btn btn-hover w-100">
+            <button
+              class="main-btn primary-btn btn-hover w-100"
+              onclick="changePassword()"
+            >
               Update Password
             </button>
 
@@ -217,6 +226,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- Modal budgeting  -->
     <div class="modal fade" id="modalBudget" tabindex="-1">
@@ -230,9 +240,9 @@
 
             <div class="input-style-1">
               <label>Batas Bulanan (Rp)</label>
-              <input type="text" id="budgetInput" placeholder="Contoh: 5.000.000" value="5.000.000" />
+              <input type="text" id="budgetInput" placeholder="Contoh: 5.000.000"/>
 
-              <input type="hidden" id="budgetValue" value="5000000">
+              <input type="hidden" id="budgetValue">
 
             </div>
 
@@ -243,7 +253,7 @@
               </label>
             </div>
 
-            <button class="main-btn primary-btn btn-hover w-100">
+            <button class="main-btn primary-btn btn-hover w-100" onclick="saveBudget()">
               Simpan Target
             </button>
 
@@ -253,83 +263,87 @@
     </div>
 
 
-    <!-- Modal kategori custom  -->
+    <!-- Modal kategori custom -->
     <div class="modal fade" id="modalKategori" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
+
           <div class="modal-header">
             <h5 class="modal-title">Kategori Custom</h5>
             <button class="btn-close" data-bs-dismiss="modal"></button>
           </div>
 
           <div class="modal-body">
-            <p class="text-sm text-gray mb-15">
-              Kelola kategori transaksi yang Anda buat secara manual.
-            </p>
 
+            <!-- Pilih tipe -->
+            <div class="mb-15">
+              <select class="form-select" id="categoryType">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
+
+            <!-- List kategori -->
             <div class="table-wrapper table-responsive mb-20">
               <table class="table">
-                <tbody>
-                  <tr>
-                    <td>Servis Motor</td>
-                    <td class="action justify-content-end">
-                      <button class="text-danger">
-                        <i class="lni lni-trash-can"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Sedekah Jumat</td>
-                    <td class="action justify-content-end">
-                      <button class="text-danger">
-                        <i class="lni lni-trash-can"></i>
-                      </button>
-                    </td>
-                  </tr>
+                <tbody id="categoryTable">
+                  <!-- data dari API masuk di sini -->
                 </tbody>
               </table>
             </div>
 
-            <div class="input-style-1 mb-20">
-              <label>Tambah Kategori Baru</label>
-              <input type="text" placeholder="Contoh: Donasi">
+            <!-- Tambah kategori -->
+            <div class="input-style-1 mb-10">
+              <label>Nama Kategori</label>
+              <input type="text" id="categoryName" placeholder="Contoh: Donasi">
             </div>
 
-            <button class="main-btn primary-btn btn-hover w-100">
-              Simpan Perubahan
+            <div class="input-style-1 mb-20">
+              <label>Deskripsi</label>
+              <input type="text" id="categoryDesc" placeholder="Opsional">
+            </div>
+
+            <button class="main-btn primary-btn btn-hover w-100" onclick="addCategory()">
+              Tambah Kategori
             </button>
+
           </div>
         </div>
       </div>
     </div>
 
-    <!-- modal reset -->
-    <div class="modal fade" id="modalReset" tabindex="-1">
+
+    <!-- modal hapus akun -->
+    <div class="modal fade" id="modalDeleteAccount" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+
           <div class="modal-header">
-            <h5 class="modal-title text-danger">Konfirmasi Reset</h5>
+            <h5 class="modal-title text-danger">Konfirmasi Hapus Akun</h5>
             <button class="btn-close" data-bs-dismiss="modal"></button>
           </div>
 
           <div class="modal-body text-center">
             <i class="lni lni-warning text-danger mb-15" style="font-size:40px"></i>
+
             <p>
-              Apakah Anda yakin ingin <strong>menghapus seluruh data</strong>?
+              Apakah Anda yakin ingin <strong>menghapus akun ini</strong>?
               <br>
-              Tindakan ini tidak bisa dibatalkan.
+              Seluruh data akan <strong>dinonaktifkan permanen</strong> dan tidak bisa dikembalikan.
             </p>
+
             <hr>
 
             <div class="d-flex gap-10">
-              <button class="main-btn primary-btn w-50" data-bs-dismiss="modal">
+              <button class="main-btn secondary-btn w-50" data-bs-dismiss="modal">
                 Batal
               </button>
-              <button class="main-btn danger-btn w-50">
-                Ya, Reset
+              <button class="main-btn danger-btn w-50" onclick="deleteAccount()">
+                Ya, Hapus Akun
               </button>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -351,7 +365,7 @@
               <button class="main-btn secondary-btn w-50" data-bs-dismiss="modal">
                 Batal
               </button>
-              <button class="main-btn danger-btn w-50">
+              <button class="main-btn danger-btn w-50" onclick="logout()">
                 Sign Out
               </button>
             </div>
@@ -367,22 +381,330 @@
   <script src="assets/js/main.js"></script>
   <script src="api.js"></script>
   <script src="layout.js"></script>
-  <script>
-    const budgetInput = document.getElementById("budgetInput");
-    const budgetValue = document.getElementById("budgetValue");
 
-    function formatRupiah(angka) {
-      return angka
-        .toString()
-        .replace(/\D/g, "")
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  <script>
+    checkAuth();
+  </script>
+
+  <script>
+  /* =============================
+    PROFIL USER
+  ============================= */
+
+  document.addEventListener("DOMContentLoaded", loadProfile);
+
+  function loadProfile() {
+    const user = JSON.parse(localStorage.getItem("user_profile"));
+    if (!user) return;
+
+    document.getElementById("profileName").value =
+      user.fullName || "-";
+
+    document.getElementById("profileEmail").value =
+      user.email || "-";
+
+    document.getElementById("profileBio").value =
+      user.username ? `Username: ${user.username}` : "-";
+
+    document.getElementById("headerName").innerText =
+      user.fullName || user.username || "-";
+
+    document.getElementById("headerEmail").innerText =
+      user.email || "-";
+  }
+
+  document
+    .getElementById("modalProfile")
+    .addEventListener("shown.bs.modal", loadProfile);
+  </script>
+
+  <script>
+  /* =============================
+    KATEGORI CUSTOM
+  ============================= */
+
+  const categoryTable = document.getElementById("categoryTable");
+  const categoryType  = document.getElementById("categoryType");
+
+  categoryType.addEventListener("change", loadCategories);
+
+  function getCategoryEndpoint() {
+    return categoryType.value === "income"
+      ? "/income-categories"
+      : "/expense-categories";
+  }
+
+  async function loadCategories() {
+    categoryTable.innerHTML = `
+      <tr>
+        <td class="text-center text-gray">Memuat data...</td>
+      </tr>`;
+
+    try {
+      const endpoint = getCategoryEndpoint();
+      const res = await fetch(API_BASE_URL + endpoint, {
+        headers: getAuthHeaders()
+      });
+
+      const json = await res.json();
+      const data = json.data || [];
+
+      if (data.length === 0) {
+        categoryTable.innerHTML = `
+          <tr>
+            <td class="text-center text-gray">Belum ada kategori</td>
+          </tr>`;
+        return;
+      }
+
+      const typeLabel = endpoint.includes("income")
+        ? "Income"
+        : "Expense";
+
+      categoryTable.innerHTML = data.map(cat => `
+        <tr>
+          <td>
+            ${cat.name}
+            <span class="category-type">(${typeLabel})</span>
+          </td>
+          <td class="action justify-content-end">
+            <button class="text-danger" onclick="deleteCategory('${cat.id}')">
+              <i class="lni lni-trash-can"></i>
+            </button>
+          </td>
+        </tr>
+      `).join("");
+
+    } catch (err) {
+      console.error(err);
+      alert("Gagal memuat kategori");
+    }
+  }
+
+  async function addCategory() {
+    const name = categoryName.value.trim();
+    const description = categoryDesc.value.trim();
+
+    if (!name) {
+      alert("Nama kategori wajib diisi");
+      return;
     }
 
-    budgetInput.addEventListener("input", function (e) {
-      const raw = e.target.value.replace(/\D/g, "");
-      budgetValue.value = raw;
-      e.target.value = raw ? formatRupiah(raw) : "";
-    });
+    try {
+      const res = await fetch(
+        API_BASE_URL + getCategoryEndpoint(),
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ name, description })
+        }
+      );
+
+      const json = await res.json();
+      if (!json.success) {
+        alert(json.message || "Gagal menambah kategori");
+        return;
+      }
+
+      categoryName.value = "";
+      categoryDesc.value = "";
+      loadCategories();
+
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan");
+    }
+  }
+
+  async function deleteCategory(id) {
+    if (!confirm("Yakin ingin menghapus kategori ini?")) return;
+
+    try {
+      const res = await fetch(
+        API_BASE_URL + getCategoryEndpoint() + `/${id}`,
+        {
+          method: "DELETE",
+          headers: getAuthHeaders()
+        }
+      );
+
+      const json = await res.json();
+      if (!json.success) {
+        alert(json.message || "Gagal menghapus");
+        return;
+      }
+
+      loadCategories();
+    } catch (err) {
+      console.error(err);
+      alert("Gagal menghapus kategori");
+    }
+  }
+
+  document
+    .getElementById("modalKategori")
+    .addEventListener("shown.bs.modal", loadCategories);
+  </script>
+
+  <script>
+  /* =============================
+    BUDGETING
+  ============================= */
+
+  const budgetInput = document.getElementById("budgetInput");
+  const budgetValue = document.getElementById("budgetValue");
+
+  function formatRupiah(angka) {
+    return angka
+      .toString()
+      .replace(/\D/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  budgetInput.addEventListener("input", e => {
+    const raw = e.target.value.replace(/\D/g, "");
+    budgetValue.value = raw;
+    e.target.value = raw ? formatRupiah(raw) : "";
+  });
+
+  async function loadBudget() {
+    try {
+      const res = await fetch(API_BASE_URL + "/auth/budget", {
+        headers: getAuthHeaders()
+      });
+
+      const json = await res.json();
+      if (!json.success) return;
+
+      const amount = json.data?.budget || 0;
+      budgetValue.value = amount;
+      budgetInput.value = formatRupiah(amount);
+
+    } catch (err) {
+      console.error("Gagal load budget:", err);
+    }
+  }
+
+  async function saveBudget() {
+    const amount = parseInt(budgetValue.value);
+
+    if (!amount || amount <= 0) {
+      alert("Nominal budget wajib diisi dan > 0");
+      return;
+    }
+
+    try {
+      const res = await fetch(API_BASE_URL + "/auth/budget", {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ amount })
+      });
+
+      const json = await res.json();
+      if (!json.success) {
+        alert(json.message || "Gagal menyimpan budget");
+        return;
+      }
+
+      alert("Budget berhasil disimpan");
+      bootstrap.Modal
+        .getInstance(document.getElementById("modalBudget"))
+        .hide();
+
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan");
+    }
+  }
+
+  document
+    .getElementById("modalBudget")
+    .addEventListener("shown.bs.modal", loadBudget);
+  </script>
+
+  <script>
+  /* =============================
+    GANTI PASSWORD
+  ============================= */
+
+  async function changePassword() {
+    const newPassword = newPassword.value.trim();
+    const confirm     = confirmPassword.value.trim();
+
+    if (!newPassword || !confirm) {
+      alert("Password baru dan konfirmasi wajib diisi");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      alert("Password minimal 8 karakter");
+      return;
+    }
+
+    if (newPassword !== confirm) {
+      alert("Konfirmasi password tidak cocok");
+      return;
+    }
+
+    try {
+      const res = await fetch(API_BASE_URL + "/auth/new-password", {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ newPassword })
+      });
+
+      const json = await res.json();
+      if (!json.success) {
+        alert(json.message || "Gagal mengubah password");
+        return;
+      }
+
+      alert("Password berhasil diubah, silakan login ulang");
+      localStorage.clear();
+      window.location.href = "signin.html";
+
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan");
+    }
+  }
+  </script>
+
+  <script>
+  /* =============================
+    AKUN (HAPUS & LOGOUT)
+  ============================= */
+
+  async function deleteAccount() {
+    if (!confirm("Tindakan ini permanen. Lanjutkan hapus akun?")) return;
+
+    try {
+      const res = await fetch(API_BASE_URL + "/auth/me", {
+        method: "DELETE",
+        headers: getAuthHeaders()
+      });
+
+      const json = await res.json();
+      if (!json.success) {
+        alert(json.message || "Gagal menghapus akun");
+        return;
+      }
+
+      alert("Akun berhasil dihapus");
+      localStorage.clear();
+      window.location.href = "signin.html";
+
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan");
+    }
+  }
+
+  function logout() {
+    if (!confirm("Yakin ingin keluar aplikasi?")) return;
+    localStorage.clear();
+    window.location.href = "signin.html";
+  }
   </script>
 
 </body>

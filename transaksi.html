@@ -102,54 +102,7 @@
                     </tr>
                   </thead>
                   <tbody id="transactionTableBody">
-                    <tr>
-                      <td>
-                        <p class="text-sm">21/12/2025</p>
-                      </td>
-                      <td>
-                        <p class="text-sm">Makan & Minum</p>
-                      </td>
-                      <td>
-                        <p class="text-sm text-gray">Nasi Goreng Spesial</p>
-                      </td>
-                      <td>
-                        <p class="text-sm text-danger">Rp 25.000</p>
-                      </td>
-                      <td><span class="status-btn close-btn">Keluar</span></td>
-                      <td>
-                        <div class="action justify-content-end">
-                          <button class="edit" data-bs-toggle="modal" data-bs-target="#modalEditTransaksi"
-                            onclick="editTransaction('21/12/2025', 'Makan & Minum', 'Nasi Goreng Spesial', '25000', 'expense')"
-                            title="Edit"><i class="lni lni-pencil"></i></button>
-                          <button class="text-danger ml-10" onclick="deleteTransaction(this)" title="Hapus"><i
-                              class="lni lni-trash-can"></i></button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p class="text-sm">20/12/2025</p>
-                      </td>
-                      <td>
-                        <p class="text-sm">Gaji</p>
-                      </td>
-                      <td>
-                        <p class="text-sm text-gray">Proyek Desain Freelance</p>
-                      </td>
-                      <td>
-                        <p class="text-sm text-success">Rp 1.500.000</p>
-                      </td>
-                      <td><span class="status-btn success-btn">Masuk</span></td>
-                      <td>
-                        <div class="action justify-content-end">
-                          <button class="edit" data-bs-toggle="modal" data-bs-target="#modalEditTransaksi"
-                            onclick="editTransaction('20/12/2025', 'Gaji', 'Proyek Desain Freelance', '1500000', 'income')"><i
-                              class="lni lni-pencil"></i></button>
-                          <button class="text-danger ml-10" onclick="deleteTransaction(this)"><i
-                              class="lni lni-trash-can"></i></button>
-                        </div>
-                      </td>
-                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -402,6 +355,8 @@
             if (!resInc.ok) throw new Error('Income fetch failed');
             if (!resExp.ok) throw new Error('Expense fetch failed');
 
+            const dInc = await resInc.json();
+            const dExp = await resExp.json();
 
             // Normalisasi Data
             const rawIncomes = dInc.data || dInc || [];
@@ -462,7 +417,7 @@
                         <td>
                             <div class="action justify-content-end">
                                 <button class="edit" data-bs-toggle="modal" data-bs-target="#modalEditTransaksi"
-                                    onclick="editTransaction('${item.id}', '${item.date}', '${catName}', '${safeDesc}', '${item.amount}', '${item.type}')">
+                                    onclick="editTransaction('${item.id}', '${item.date}', '${item.categoryId}', '${safeDesc}', '${item.amount}', '${item.type}')">
                                     <i class="lni lni-pencil"></i>
                                 </button>
                                 <button class="text-danger ml-10" onclick="deleteTransaction('${item.id}', '${item.type}')">
@@ -476,7 +431,7 @@
 
         } catch (error) {
             console.error("Error load transactions:", error);
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Gagal memuat data.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Belum ada transaksi.</td></tr>';
         }
     }
 
@@ -558,51 +513,95 @@
         // Kita paksa render ulang dropdown edit sesuai tipe dulu
         renderCategoryOptions(type, 'kategoriSelectEdit');
         
-        // Timeout sedikit biar render selesai, baru set value
-        setTimeout(() => {
-            const select = document.getElementById('kategoriSelectEdit');
-            // Coba cari option yang teks-nya sama dengan catName
-            for (let i = 0; i < select.options.length; i++) {
-                if (select.options[i].text === catName) {
-                    select.selectedIndex = i;
-                    break;
-                }
-            }
-        }, 100);
+        const select = document.getElementById('kategoriSelectEdit');
+        select.value = categoryId;;
     }
 
     async function updateTransaction() {
+        // 1. AMBIL DATA
         const type = document.getElementById('tipeTransaksiInputEdit').value;
         const categoryId = document.getElementById('kategoriSelectEdit').value;
         const total = document.getElementById('inputNominalEditValue').value;
         const description = document.getElementById('inputDeskripsiEdit').value;
         const dateValue = document.getElementById('inputDateEdit').value;
 
+        if (!currentEditId) { alert("ID Transaksi hilang. Refresh halaman."); return; }
+        if (!categoryId) { alert("Kategori harus dipilih!"); return; }
+        if (!total) { alert("Nominal tidak boleh kosong!"); return; }
+        if (!dateValue) { alert("Tanggal harus diisi!"); return; }
+
+        const btn = document.querySelector('#modalEditTransaksi .primary-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Updating...';
+        btn.disabled = true;
+
         try {
             const endpoint = type === 'income' ? `/income-batches/${currentEditId}` : `/expense-batches/${currentEditId}`;
             const dateKey = type === 'income' ? 'incomeDate' : 'expenseDate';
 
             const payload = {
-                categoryId: categoryId,
-                totalAmount: total.toString(),
-                description: description || "-"
+                categoryId: categoryId,         
+                totalAmount: total.toString(),  
+                description: description || "-" 
             };
-            payload[dateKey] = dateValue;
+            payload[dateKey] = dateValue;      
+
+            // 2. FETCH DATA
+            const headers = {
+                ...getAuthHeaders(),
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            };
 
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-                method: 'PATCH', // atau PUT
-                headers: getAuthHeaders(),
+                method: 'PATCH', 
+                headers: headers,
                 body: JSON.stringify(payload)
             });
 
+            // 3. CEK TEXT RESPONSE DULU (JANGAN LANGSUNG .JSON)
+            // Ini trik untuk melihat error asli server jika server mengembalikan HTML (bukan JSON)
+            const responseText = await response.text();
+            
+            // Coba parsing ke JSON
+            let resJson;
+            try {
+                resJson = JSON.parse(responseText);
+            } catch (err) {
+                // Jika gagal parse JSON, berarti server mengirim HTML atau string biasa
+                console.warn("Response bukan JSON:", responseText);
+                resJson = null; 
+            }
+
+            // 4. LOGIKA SUKSES/GAGAL
             if (response.ok) {
+                // Jika status 200-299, anggap sukses meskipun JSON-nya aneh
                 alert("✅ Update Berhasil!");
                 bootstrap.Modal.getInstance(document.getElementById('modalEditTransaksi')).hide();
                 loadTransactions();
             } else {
-                alert("Gagal Update.");
+                // Jika status error (400, 500, dll)
+                console.error("Server Error:", responseText);
+                
+                // Tampilkan pesan error yang lebih jelas
+                let errorMsg = "Terjadi kesalahan server.";
+                if (resJson && resJson.message) {
+                    errorMsg = resJson.message;
+                } else if (responseText) {
+                    // Tampilkan sebagian teks error (misal potongan HTML error)
+                    errorMsg = "Server Error: " + responseText.substring(0, 50) + "...";
+                }
+                
+                alert("❌ Gagal (" + response.status + "): " + errorMsg);
             }
-        } catch (e) { console.error(e); alert("Error sistem."); }
+
+        } catch (e) {
+            console.error("System Error:", e);
+            alert("Error Jaringan/Sistem: " + e.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
     }
 
     // --- 6. HAPUS TRANSAKSI ---

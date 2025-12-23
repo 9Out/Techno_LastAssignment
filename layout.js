@@ -15,7 +15,7 @@ function initLayout() {
     <nav class="sidebar-nav">
       <ul>
         <li class="nav-item" id="menu-dashboard">
-          <a href="index.html">
+          <a href="index.html" class="nav-link">
             <span class="icon"><i class="lni lni-grid-alt"></i></span>
             <span class="text">Dashboard</span>
           </a>
@@ -54,16 +54,6 @@ function initLayout() {
           </div>
           <div class="col-lg-7 col-md-7 col-6">
             <div class="header-right">
-              <div class="notification-box ml-15 d-none d-md-flex">
-                <button class="dropdown-toggle" type="button" id="notification" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="lni lni-alarm"></i>
-                  <span>2</span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notification">
-                  <li><a href="#0"> <div class="content"> <h6>Notifikasi Baru</h6> <p>Anda berhasil login.</p> </div> </a></li>
-                </ul>
-              </div>
-
               <div class="profile-box ml-15">
                 <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile"
                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,15 +83,6 @@ function initLayout() {
                     </div>
                   </li>
                   <li class="divider"></li>
-                  <li>
-                    <a href="#0"> <i class="lni lni-user"></i> View Profile </a>
-                  </li>
-                  <li>
-                    <a href="#0"> <i class="lni lni-alarm"></i> Notifications </a>
-                  </li>
-                  <li>
-                    <a href="#0"> <i class="lni lni-inbox"></i> Messages </a>
-                  </li>
                   <li>
                     <a href="settings.html"> <i class="lni lni-cog"></i> Settings </a>
                   </li>
